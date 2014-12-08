@@ -34,6 +34,9 @@ class ViewController: UIViewController {
     var betOneButton:UIButton!
     var betMaxButton:UIButton!
     var spinButton:UIButton!
+    
+    // Slots Array
+    var slots:[[Slot]] = []
 
     
     // Constants - k for constants
@@ -79,6 +82,8 @@ class ViewController: UIViewController {
     
     func spinButtonPressed(button:UIButton) {
         println("spin button pressed! \(button)")
+        slots = Factory.creatSlots()
+        setupSecondContainer(self.secondContainer)
     }
     
     func setupContainerViews() {
@@ -117,7 +122,17 @@ class ViewController: UIViewController {
     func setupSecondContainer(containerView:UIView) {
         for var containerNumber=0; containerNumber < kNumberOfContainers; containerNumber++ {
             for var slotNumber=0; slotNumber < kNumberOfSlots; slotNumber++ {
+                var slot:Slot
                 var slotImageView = UIImageView()
+                
+                if slots.count != 0 {
+                    let slotContainer = slots[containerNumber]
+                    slot = slotContainer[slotNumber]
+                    slotImageView.image = slot.image
+                } else {
+                    slotImageView.image = UIImage(named: "Ace")
+                }
+                
                 slotImageView.backgroundColor = UIColor.yellowColor()
                 slotImageView.frame = CGRectMake(containerView.bounds.origin.x + containerView.bounds.size.width * CGFloat(containerNumber) * kThird,
                                                  containerView.bounds.origin.y + containerView.bounds.size.height * CGFloat(slotNumber) * kThird,
@@ -196,7 +211,8 @@ class ViewController: UIViewController {
         self.resetButton.backgroundColor = UIColor.lightGrayColor()
         self.resetButton.sizeToFit()
         self.resetButton.center = CGPointMake(containerView.frame.width * kEighth, containerView.frame.height * kHalf)
-        self.resetButton.addTarget(self, action: "resetButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        // It is important to add ":" after funcation name in the action, such as "resetButtonPressed:"
+        self.resetButton.addTarget(self, action: "resetButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         containerView.addSubview(self.resetButton)
 
         self.betOneButton = UIButton()
@@ -206,7 +222,7 @@ class ViewController: UIViewController {
         self.betOneButton.backgroundColor = UIColor.greenColor()
         self.betOneButton.sizeToFit()
         self.betOneButton.center = CGPointMake(containerView.frame.width * kEighth * 3, containerView.frame.height * kHalf)
-        self.betOneButton.addTarget(self, action: "betOneButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        self.betOneButton.addTarget(self, action: "betOneButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         containerView.addSubview(self.betOneButton)
         
         self.betMaxButton = UIButton()
@@ -216,7 +232,7 @@ class ViewController: UIViewController {
         self.betMaxButton.backgroundColor = UIColor.redColor()
         self.betMaxButton.sizeToFit()
         self.betMaxButton.center = CGPointMake(containerView.frame.width * kEighth * 5, containerView.frame.height * kHalf)
-        self.betMaxButton.addTarget(self, action: "betMaxButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        self.betMaxButton.addTarget(self, action: "betMaxButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         containerView.addSubview(self.betMaxButton)
         
         self.spinButton = UIButton()
@@ -226,7 +242,7 @@ class ViewController: UIViewController {
         self.spinButton.backgroundColor = UIColor.greenColor()
         self.spinButton.sizeToFit()
         self.spinButton.center = CGPointMake(containerView.frame.width * kEighth * 7, containerView.frame.height * kHalf)
-        self.spinButton.addTarget(self, action: "spinButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        self.spinButton.addTarget(self, action: "spinButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         containerView.addSubview(self.spinButton)
     }
 

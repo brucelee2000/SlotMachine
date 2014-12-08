@@ -20,7 +20,9 @@ class Factory {
             var slotArray:[Slot] = []
             
             for var slotNumber=0; slotNumber < kNumberOfSlots; ++slotNumber {
-                var slot = Slot(value: 0, image: UIImage(named: "")!, isRed: true)
+                // Create an empty for placeholder
+                //var slot = Slot(value: 0, image: UIImage(named: "")!, isRed: true)
+                var slot = Factory.createSlot(slotArray)
                 slotArray.append(slot)
             }
          
@@ -30,6 +32,7 @@ class Factory {
         return slots
     }
     
+    // Generate a slot without duping previous slots
     class func createSlot(currentCards:[Slot]) -> Slot {
         var currentCardValues:[Int] = []
         for slot in currentCards {
