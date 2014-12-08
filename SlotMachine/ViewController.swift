@@ -97,13 +97,34 @@ class ViewController: UIViewController {
     
     func betMaxButtonPressed(button:UIButton) {
         println("betMax button pressed! \(button)")
+        if credits <= 5 {
+            showAlertWithText(header: "Not Enough Credits", message: "Bet Less")
+        } else {
+            if currentBet < 5 {
+                credits -= 5 - currentBet
+                currentBet = 5
+                updateMainView()
+            } else  {
+                showAlertWithText(message: "You can only bet 5 credits at a time")
+            }
+        }
     }
     
     func spinButtonPressed(button:UIButton) {
+        // Initialize the slots data
         println("spin button pressed! \(button)")
         removeSlotImageViews()
         slots = Factory.creatSlots()
         setupSecondContainer(self.secondContainer)
+        
+        // Check winnings
+        var winningMultiplier = SlotBrain.computeWinnings(slots)
+        winnings = winningMultiplier * currentBet
+        credits += winnings
+        currentBet = 0
+        
+        // Update labels in the containers
+        updateMainView()
     }
     
     func setupContainerViews() {
