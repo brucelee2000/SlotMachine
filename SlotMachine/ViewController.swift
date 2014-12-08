@@ -37,6 +37,11 @@ class ViewController: UIViewController {
     
     // Slots Array
     var slots:[[Slot]] = []
+    
+    // Stats
+    var credits:Int = 0
+    var currentBet:Int = 0
+    var winnings:Int = 0
 
     
     // Constants - k for constants
@@ -59,6 +64,8 @@ class ViewController: UIViewController {
         setupSecondContainer(self.secondContainer)
         setupThirdContainer(self.thirdContainer)
         setupFourthContainer(self.fourthContainer)
+        
+        hardReset()
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,6 +76,7 @@ class ViewController: UIViewController {
     // IBActions
     func resetButtonPressed(button:UIButton) {
         println("RESET button pressed!")
+        hardReset()
     }
     
     func betOneButtonPressed(button:UIButton) {
@@ -82,6 +90,7 @@ class ViewController: UIViewController {
     
     func spinButtonPressed(button:UIButton) {
         println("spin button pressed! \(button)")
+        removeSlotImageViews()
         slots = Factory.creatSlots()
         setupSecondContainer(self.secondContainer)
     }
@@ -246,5 +255,32 @@ class ViewController: UIViewController {
         containerView.addSubview(self.spinButton)
     }
 
+    // Helpers
+    func removeSlotImageViews() {
+        if self.secondContainer != nil {
+            let container:UIView? = self.secondContainer!
+            let subViews:Array? = container!.subviews
+            for view in subViews! {
+                view.removeFromSuperview()
+            }
+        }
+    }
+    
+    func hardReset() {
+        removeSlotImageViews()
+        slots.removeAll(keepCapacity: true)
+        self.setupSecondContainer(secondContainer)
+        credits = 50
+        winnings = 0
+        currentBet = 0
+        
+        updateMainView()
+    }
+    
+    func updateMainView() {
+        self.creditsLabel.text = "\(credits)"
+        self.betLabel.text = "\(currentBet)"
+        self.winnerPaidLabel.text = "\(winnings)"
+    }
 }
 
